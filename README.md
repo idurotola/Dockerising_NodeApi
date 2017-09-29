@@ -6,10 +6,17 @@ REST API for mobile applications using Node.js and Express.js framework with Mon
 
 You need to have installed Node.js, MongoDB, Redis and Docker.
 
+## Running project with one command
+To watch all the processes run from startup to server run:
+```
+make or make all
+```
+
 ### Install dependencies 
 
 To install dependencies enter project folder and run following command:
 ```
+cd app/
 npm install
 ```
 
@@ -17,46 +24,43 @@ npm install
 
 To create demo data in your MongoDB execute ```generateData.js``` file 
 ```
-node generateData.js
+make generate or node app/generateData.js
 ```
 
 ### Run Container and server
 
 To run servers on container execute:
 ```
-docker-compose up 
-```
-
-### Run server
-
-To run server execute:
-```
-cd app/
-node bin/www 
+make server
 ```
 
 ### Make Requests
 
 Creating and refreshing access tokens:
 ```
-http POST http://localhost:1337/api/oauth/token grant_type=password client_id=android client_secret=SomeRandomCharsAndNumbers username=myapi password=abc1234
-http POST http://localhost:1337/api/oauth/token grant_type=refresh_token client_id=android client_secret=SomeRandomCharsAndNumbers refresh_token=[TOKEN]
+http POST http://localhost:8080/api/oauth/token grant_type=password client_id=android client_secret=SomeRandomCharsAndNumbers username=myapi password=abc1234
+http POST http://localhost:8080/api/oauth/token grant_type=refresh_token client_id=android client_secret=SomeRandomCharsAndNumbers refresh_token=[TOKEN]
 ```
 
 Creating your article data:
 ```
-http POST http://localhost:1337/api/articles title=NewArticle author='John Doe' description='Lorem ipsum dolar sit amet' images:='[{"kind":"thumbnail", "url":"http://habrahabr.ru/images/write-topic.png"}, {"kind":"detail", "url":"http://habrahabr.ru/images/write-topic.png"}]' Authorization:'Bearer PUT_YOUR_TOKEN_HERE'
+http POST http://localhost:8080/api/articles title=NewArticle author='John Doe' description='Lorem ipsum dolar sit amet' images:='[{"kind":"thumbnail", "url":"http://habrahabr.ru/images/write-topic.png"}, {"kind":"detail", "url":"http://habrahabr.ru/images/write-topic.png"}]' Authorization:'Bearer PUT_YOUR_TOKEN_HERE'
 ```
 
 Updating your article data:
 ```
-http PUT http://localhost:1337/api/articles/YOUR_ARTICLE_ID_HERE title=NewArticleUpdated author='John Doe' description='Lorem ipsum dolar sit amet' images:='[{"kind":"thumbnail", "url":"http://habrahabr.ru/images/write-topic.png"}, {"kind":"detail", "url":"http://habrahabr.ru/images/write-topic.png"}]' Authorization:'Bearer PUT_YOUR_TOKEN_HERE'
+http PUT http://localhost:8080/api/articles/YOUR_ARTICLE_ID_HERE title=NewArticleUpdated author='John Doe' description='Lorem ipsum dolar sit amet' images:='[{"kind":"thumbnail", "url":"http://habrahabr.ru/images/write-topic.png"}, {"kind":"detail", "url":"http://habrahabr.ru/images/write-topic.png"}]' Authorization:'Bearer PUT_YOUR_TOKEN_HERE'
 ```
 
 Getting your data 
 ```
-http http://localhost:1337/api/users/info Authorization:'Bearer PUT_YOUR_TOKEN_HERE'
-http http://localhost:1337/api/articles Authorization:'Bearer PUT_YOUR_TOKEN_HERE'
+http http://localhost:8080/api/users/info Authorization:'Bearer PUT_YOUR_TOKEN_HERE'
+http http://localhost:8080/api/articles Authorization:'Bearer PUT_YOUR_TOKEN_HERE'
+```
+
+Searching a word and page your desired page size (optional page size defaults to 2): 
+```
+http http://localhost:8080/api/articles/pages?search=KEY_WORD&page=PAGE_NO&limit=PAGE_SIZE Authorization:'Bearer PUT_YOUR_TOKEN_HERE'
 ```
 
 ## Modules used

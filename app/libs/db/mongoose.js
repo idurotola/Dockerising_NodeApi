@@ -12,9 +12,7 @@ var hostPort = process.env.MONGO_PORT_27017_TCP_PORT || '27017';
 /* Append /test to database name when you are running the test
 to keep test database from the production or 
 development environment */
-
-process.env.NODE_ENV == "test" ? hostPort += '/test' : null ;
-
+process.env.NODE_ENV == "test" ? hostPort += '/test' : hostPort += '/prod' ;
 mongoose.connect('mongodb://' + hostAddr + ':' + hostPort);
 
 var db = mongoose.connection;

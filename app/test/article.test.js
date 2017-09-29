@@ -12,8 +12,7 @@ describe('Authorization : ', function() {
   before(function(done) {
     this.timeout(3000);
 
-    setup.cleanDb(function(){
-
+    setup.cleanDb(function() {
       setup.setup(function(loginData) {
         
         /* Create a token to be used for test */
@@ -124,68 +123,68 @@ describe('Authorization : ', function() {
           done();
         });
     });
+  });
 
-    describe('Pagination: ', function() {
-      var articlesResult,
-          url = '/api/articles/pages?search=Engineer&page=0&limit=2';
-      
-      var getArticleIds = function(data) {
-        return data.map(function(article) {
-          return article._id;
-        });
-      };
-
-      before(function(done) {
-        this.timeout(3000);
-        setup.generateArticles(function(){
-          /* Fetch article with a search string Engineer
-          and save the result */
-          
-          request
-            .get(url)
-            .set('Content-Type', 'application/json')
-            .set('Authorization', token)
-            .expect(200)
-            .end(function(err, res) {
-              articlesResult = res.body;
-              done();
-            });
-        });
+  describe('Pagination: ', function() {
+    var articlesResult,
+        url = '/api/articles/pages?search=Engineer&page=0&limit=2';
+    
+    var getArticleIds = function(data) {
+      return data.map(function(article) {
+        return article._id;
       });
+    };
 
-      it('a GET /api/articles/pages with a search string and pagination \
-      should return cache', function(done) {
+    before(function(done) {
+      this.timeout(3000);
+      setup.generateArticles(function(){
+        /* Fetch article with a search string Engineer
+        and save the result */
+        
         request
           .get(url)
           .set('Content-Type', 'application/json')
           .set('Authorization', token)
           .expect(200)
           .end(function(err, res) {
-            // Compare the ids as unique values
-            expect(articlesResult.length).to.equal(res.body.length);
-
-            var articlesResultIds = getArticleIds(articlesResult);
-            var responseIds = getArticleIds(res.body);
-
-            expect(articlesResultIds).to.contain(responseIds[0]);
-            expect(articlesResultIds).to.contain(responseIds[1]);
-            
+            articlesResult = res.body;
             done();
           });
       });
+    });
 
-      it('a GET /api/articles/pages should use the default limit ', function(done) {
-        request
-          .get('/api/articles/pages?search=engineer&page=1')
-          .set('Content-Type', 'application/json')
-          .set('Authorization', token)
-          .expect(200)
-          .end(function(err, res) {
-            expect(err).to.be(null);
-            expect(res.body.length).to.be(2);
-            done();
-          });
-      });
+    it('a GET /api/articles/pages with a search string and pagination \
+    should return cache', function(done) {
+      request
+        .get(url)
+        .set('Content-Type', 'application/json')
+        .set('Authorization', token)
+        .expect(200)
+        .end(function(err, res) {
+          // Compare the ids as unique values
+          expect(articlesResult.length).to.equal(res.body.length);
+
+          var articlesResultIds = getArticleIds(articlesResult);
+          var responseIds = getArticleIds(res.body);
+
+          expect(articlesResultIds).to.contain(responseIds[0]);
+          expect(articlesResultIds).to.contain(responseIds[1]);
+          
+          done();
+        });
+    });
+
+    it('a GET /api/articles/pages should use the default limit ', function(done) {
+      request
+        .get('/api/articles/pages?search=engineer&page=0')
+        .set('Content-Type', 'application/json')
+        .set('Authorization', token)
+        .expect(200)
+        .end(function(err, res) {
+          expect(err).to.be(null);
+          expect(res.body.length).to.be(2);
+          done();
+        });
     });
   });
 });

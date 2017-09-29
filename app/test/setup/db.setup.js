@@ -1,16 +1,15 @@
 var faker = require('faker');
+var mongoose = require('mongoose');
 
 /* Database Cleaner */
 var DatabaseCleaner = require('database-cleaner'); 
-var mongodbCleaner = new DatabaseCleaner('mongodb');
 var redisCleaner = new DatabaseCleaner('redis');
-var connect = require('mongodb').connect
 
 /* Config */
 var libs = process.cwd() + '/libs/';
 var config = require(libs + 'config');
-var db = require(libs + 'db/mongoose');
 var redisClient = require(libs + 'db/cache');
+// var mongoose = require(libs + 'db/mongoose');
 var log = require(libs + 'log')(module);
 
 /* Utils */
@@ -22,19 +21,14 @@ var Client = require(libs + 'model/client');
 var Article = require(libs + 'model/article');
 
 /* Prepare login details for type: password */
-var loginData = {grant_type: "password"};
+var loginData = { grant_type: "password" };
 
 function cleanDb(cb) {
   /* Drop the DB */
-  connect(config.get('test:mongoose:uri'), function(err, database) {
-    if(err) log.info("Error dropping DB");
-    mongodbCleaner.clean(database, function() {
-      
-      database.close();
-      redisCleaner.clean(redisClient, function() {
-        cb();
-      });
-      
+  mongoose.connection.db.dropDatabase(function() {
+    log.info("Database cleaned up!! 🔥");
+    redisCleaner.clean(redisClient, function() {
+      cb();
     });
   });
 };
@@ -45,13 +39,13 @@ function setup(cb) {
     username: config.get('test:user:username'),
     password: config.get('test:user:password'), 
   });
-
+  
   var client = new Client({ 
     name: config.get('test:client:name'), 
     clientId: config.get('test:client:clientId'), 
     clientSecret: config.get('test:client:clientSecret') 
   });
-
+  
   user.save(function(err, user) {
     if(err) return log.error(err);
 
@@ -99,14 +93,14 @@ function generateArticles(cb) {
     description: 'How to scale the server with minimum down time'
   }];
 
-  for(var i=0; i < 10; i++) {
+  for(var i=0; i < 5; i++) {
     articles.push({ 
       author: prepend(faker.name.findName), 
       title: prepend(faker.name.title), 
       description: prepend(faker.lorem.sentence)
     });
   }
-
+  
   Article.collection.insert(articles, function(err, docs) {
     if(err) return log.error(err);
     /* Should leave some time for the database to run

@@ -1,7 +1,7 @@
 {
 	"port": 1337,
 	"security": {
-		"tokenLife" : 36000
+		"tokenLife" : 3600
 	},
 	"default": {
 		"api": {
@@ -18,9 +18,6 @@
 		}
 	},
 	"test": {
-		"mongoose": {
-			"uri": "mongodb://localhost:27017/test"
-		},
 		"user": {
 			"username": "TestUser",
 			"password": "TestUserPassword"
