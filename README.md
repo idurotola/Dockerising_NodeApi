@@ -69,10 +69,13 @@ Some of non standard modules used:
 * [faker](https://www.npmjs.com/package/faker)
 * [oauth2orize](https://www.npmjs.com/package/oauth2orize)
 * [passport](https://www.npmjs.com/package/passport)
+* [redis](https://www.npmjs.com/package/redis)
+
 
 ## Tools used
 
-[httpie](https://github.com/jkbr/httpie) - command line HTTP client
+* [httpie](https://github.com/jkbr/httpie) - command line HTTP client
+* [Docker](https://www.docker.com/) - container
 
 ### JSHint
 
@@ -83,5 +86,5 @@ jshint libs/**/*.js generateData.js
 ```
 
 ## Author
-This is modified from NodeApi by by Evgeny Aleksandrov ([@EAleksandrov](http://twitter.com/EAleksandrov)).
+This is modified from ([NodeApi](https://github.com/ealeksandrov/NodeAPI)).
 
