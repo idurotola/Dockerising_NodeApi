@@ -22,7 +22,7 @@ node generateData.js
 
 ### Run Container and server
 
-To run server execute:
+To run servers on container execute:
 ```
 docker-compose up 
 ```
