@@ -1,12 +1,10 @@
-# Node REST API
+# Node REST API with Mongo and Redis all Dockerized
 
 REST API for mobile applications using Node.js and Express.js framework with Mongoose.js for working with MongoDB. For access control this project use OAuth 2.0, with the help of OAuth2orize and Passport.js.
 
-This is updated code that follows [RESTful API With Node.js + MongoDB](https://aleksandrov.ws/2013/09/12/restful-api-with-nodejs-plus-mongodb) article.
-
 ## Running project
 
-You need to have installed Node.js and MongoDB 
+You need to have installed Node.js, MongoDB, Redis and Docker.
 
 ### Install dependencies 
 
@@ -77,13 +75,5 @@ jshint libs/**/*.js generateData.js
 ```
 
 ## Author
+This is modified from NodeApi by by Evgeny Aleksandrov ([@EAleksandrov](http://twitter.com/EAleksandrov)).
 
-This example was created by Evgeny Aleksandrov ([@EAleksandrov](http://twitter.com/EAleksandrov)).
-
-Updated by: 
-* [Istock Jared](https://github.com/IstockJared)
-* [Marko Arsić](http://portfolio.marsic.info/)  
-
-## License
-
-[MIT](https://github.com/ealeksandrov/NodeAPI/blob/master/LICENSE)

@@ -12,9 +12,9 @@ var Images = new Schema({
 });
 
 var Article = new Schema({
-	title: { type: String, required: true },
-	author: { type: String, required: true },
-	description: { type: String, required: true },
+	title: { type: String, required: true, index: true },
+	author: { type: String, required: true, index: true },
+	description: { type: String, required: true, index: true },
 	images: [Images],
 	modified: { type: Date, default: Date.now }
 });
@@ -22,5 +22,8 @@ var Article = new Schema({
 Article.path('title').validate(function (v) {
 	return v.length > 5 && v.length < 70;
 });
+
+// Add an index for full text search
+Article.index({'$**': 'text'},{ "background": false });
 
 module.exports = mongoose.model('Article', Article);

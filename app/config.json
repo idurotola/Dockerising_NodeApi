@@ -1,0 +1,34 @@
+{
+	"port": 1337,
+	"security": {
+		"tokenLife" : 36000
+	},
+	"default": {
+		"api": {
+			"version" : "v1"
+		},
+		"user": {
+			"username": "myapi",
+			"password": "abc1234"
+		},
+		"client": {
+			"name": "Android API v1",
+			"clientId": "android",
+			"clientSecret": "SomeRandomCharsAndNumbers"
+		}
+	},
+	"test": {
+		"mongoose": {
+			"uri": "mongodb://localhost:27017/test"
+		},
+		"user": {
+			"username": "TestUser",
+			"password": "TestUserPassword"
+		},
+		"client": {
+			"name": "TestClientName",
+			"clientId": "TestClientId",
+			"clientSecret": "TestClientSecret"
+		}
+	}
+}

@@ -6,10 +6,58 @@ var libs = process.cwd() + '/libs/';
 var log = require(libs + 'log')(module);
 
 var db = require(libs + 'db/mongoose');
+var client = require(libs + 'db/cache');
 var Article = require(libs + 'model/article');
 
-router.get('/', passport.authenticate('bearer', { session: false }), function(req, res) {
+function cache(req, res, next) {
+
+	var searchString = req.query.search;
+	var page = parseInt(req.query.page);
+	var limit = parseInt(req.query.limit);
+
+	// Create a concat of the string 
+	var cacheString = 'cache_' + searchString + page + limit;
+
+	client.get(cacheString, function (err, data) {
+		if (err) {
+			log.error('Internal error(%d): %s',err.message);
+			throw err;
+		}
+		
+		data ? res.send(JSON.parse(data)) : next();
+	});
+}
+
+router.get('/pages', passport.authenticate('bearer', { session: false }), cache, function(req, res) {
+
+	var searchString = req.query.search;
+	var page = parseInt(req.query.page);
 	
+	/* When the limit is not specified it
+	should  use the default value of 2 */ 
+	var limit = req.query.limit ? parseInt(req.query.limit) : 2;	
+
+	var cacheString = 'cache_' + searchString + page + limit;
+
+	Article.find({$text: {$search: searchString}}).skip(page).limit(limit)
+	.exec(function (err, articles) {
+		if (!err) {
+			client.set(cacheString, JSON.stringify(articles));
+			return res.json(articles);
+		} else {
+			
+			res.statusCode = 500;
+			
+			log.error('Internal error(%d): %s',res.statusCode,err.message);
+			
+			return res.json({ 
+				error: 'Server error' 
+			});
+		}
+	});
+});
+
+router.get('/', passport.authenticate('bearer', { session: false }), function(req, res) {
 	Article.find(function (err, articles) {
 		if (!err) {
 			return res.json(articles);
