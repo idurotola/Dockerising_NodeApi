@@ -20,10 +20,18 @@ To create demo data in your MongoDB execute ```generateData.js``` file
 node generateData.js
 ```
 
+### Run Container and server
+
+To run server execute:
+```
+docker-compose up 
+```
+
 ### Run server
 
 To run server execute:
 ```
+cd app/
 node bin/www 
 ```
 
