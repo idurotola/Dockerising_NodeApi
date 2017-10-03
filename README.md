@@ -12,6 +12,12 @@ To watch all the processes run from startup to server run:
 make or make all
 ```
 
+## Running tests
+To run the tests:
+```
+make test
+```
+
 ### Install dependencies 
 
 To install dependencies enter project folder and run following command:
