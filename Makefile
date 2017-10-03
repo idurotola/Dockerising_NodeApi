@@ -12,7 +12,8 @@ test: ;@echo "Running Tests..."; \
 	docker-compose run -e NODE_ENV=test web npm run test;
 
 generate: ;@echo "Generating data..."; \
-	docker exec -it nodeapi_web_1 node generateData.js;
+	CONTAINER_ID=$(shell docker-compose ps -q web); \
+	docker exec -it $$CONTAINER_ID node generateData.js;
 
 install: ;@echo "Installing Depenencies....."; \
 	cd app/; \
